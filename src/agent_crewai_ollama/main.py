@@ -1,68 +1,65 @@
 #!/usr/bin/env python
 import sys
 import warnings
-
 from datetime import datetime
-
-from agent_crewai_ollama.crew import AgentCrewaiOllama
+from software_house.crew import SoftwareHouseCrew
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
-# This main file is intended to be a way for you to run your
-# crew locally, so refrain from adding unnecessary logic into this file.
-# Replace with inputs you want to test with, it will automatically
-# interpolate any tasks and agents information
-
 def run():
-    """
-    Run the crew.
-    """
+    """Run the software development crew"""
     inputs = {
-        'topic': 'AI LLMs',
+        'domain': 'Healthcare SaaS Platform',
+        'tech_stack': 'React/Node.js/PostgreSQL',
+        'industry': 'HIPAA',
         'current_year': str(datetime.now().year)
     }
     
     try:
-        AgentCrewaiOllama().crew().kickoff(inputs=inputs)
+        SoftwareHouseCrew().crew().kickoff(inputs=inputs)
     except Exception as e:
-        raise Exception(f"An error occurred while running the crew: {e}")
-
+        raise Exception(f"Software development crew execution failed: {e}")
 
 def train():
-    """
-    Train the crew for a given number of iterations.
-    """
+    """Train the development crew with specific iterations"""
     inputs = {
-        "topic": "AI LLMs",
+        'domain': 'E-commerce Platform',
+        'tech_stack': 'Next.js/Spring Boot/MongoDB',
+        'industry': 'PCI-DSS',
         'current_year': str(datetime.now().year)
     }
     try:
-        AgentCrewaiOllama().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
-
+        SoftwareHouseCrew().crew().train(
+            n_iterations=int(sys.argv[1]),
+            filename=sys.argv[2],
+            inputs=inputs
+        )
     except Exception as e:
-        raise Exception(f"An error occurred while training the crew: {e}")
+        raise Exception(f"Failed to train development crew: {e}")
 
 def replay():
-    """
-    Replay the crew execution from a specific task.
-    """
+    """Replay specific development task"""
     try:
-        AgentCrewaiOllama().crew().replay(task_id=sys.argv[1])
-
+        SoftwareHouseCrew().crew().replay(task_id=sys.argv[1])
     except Exception as e:
-        raise Exception(f"An error occurred while replaying the crew: {e}")
+        raise Exception(f"Task replay failed: {e}")
 
 def test():
-    """
-    Test the crew execution and returns the results.
-    """
+    """Test crew performance"""
     inputs = {
-        "topic": "AI LLMs",
-        "current_year": str(datetime.now().year)
+        'domain': 'IoT Fleet Management',
+        'tech_stack': 'React Native/Python/AWS IoT',
+        'industry': 'ISO 27001',
+        'current_year': str(datetime.now().year)
     }
-    
     try:
-        AgentCrewaiOllama().crew().test(n_iterations=int(sys.argv[1]), eval_llm=sys.argv[2], inputs=inputs)
-
+        SoftwareHouseCrew().crew().test(
+            n_iterations=int(sys.argv[1]),
+            eval_llm=sys.argv[2],
+            inputs=inputs
+        )
     except Exception as e:
-        raise Exception(f"An error occurred while testing the crew: {e}")
+        raise Exception(f"Development crew testing failed: {e}")
+
+if __name__ == "__main__":
+    run()
