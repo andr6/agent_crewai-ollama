@@ -2,63 +2,93 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
-# If you want to run a snippet of code before or after the crew starts,
-# you can use the @before_kickoff and @after_kickoff decorators
-# https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
 
 @CrewBase
-class AgentCrewaiOllama():
-    """AgentCrewaiOllama crew"""
+class SoftwareHouseCrew():
+    """Software House Development Crew"""
 
     agents: List[BaseAgent]
     tasks: List[Task]
 
-    # Learn more about YAML configuration files here:
-    # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
-    # Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
-    
-    # If you would like to add tools to your agents, you can learn more about it here:
-    # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
-    def researcher(self) -> Agent:
+    def technical_lead(self) -> Agent:
         return Agent(
-            config=self.agents_config['researcher'], # type: ignore[index]
+            config=self.agents_config['technical_lead'],
+            verbose=True,
+            allow_delegation=False
+        )
+
+    @agent
+    def full_stack_engineer(self) -> Agent:
+        return Agent(
+            config=self.agents_config['full_stack_engineer'],
             verbose=True
         )
 
     @agent
-    def reporting_analyst(self) -> Agent:
+    def qa_automation_engineer(self) -> Agent:
         return Agent(
-            config=self.agents_config['reporting_analyst'], # type: ignore[index]
+            config=self.agents_config['qa_automation_engineer'],
             verbose=True
         )
 
-    # To learn more about structured task outputs,
-    # task dependencies, and task callbacks, check out the documentation:
-    # https://docs.crewai.com/concepts/tasks#overview-of-a-task
-    @task
-    def research_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['research_task'], # type: ignore[index]
+    @agent
+    def devops_engineer(self) -> Agent:
+        return Agent(
+            config=self.agents_config['devops_engineer'],
+            verbose=True
+        )
+
+    @agent
+    def ux_technical_specialist(self) -> Agent:
+        return Agent(
+            config=self.agents_config['ux_technical_specialist'],
+            verbose=True
         )
 
     @task
-    def reporting_task(self) -> Task:
+    def technical_design_task(self) -> Task:
         return Task(
-            config=self.tasks_config['reporting_task'], # type: ignore[index]
-            output_file='report.md'
+            config=self.tasks_config['technical_design_task'],
+            output_file='technical_spec.md'
+        )
+
+    @task
+    def feature_development_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['feature_development_task'],
+            output_file='feature_implementation'
+        )
+
+    @task
+    def quality_assurance_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['quality_assurance_task'],
+            output_file='quality_report.md'
+        )
+
+    @task
+    def deployment_pipeline_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['deployment_pipeline_task'],
+            output_file='pipeline_config'
+        )
+
+    @task
+    def ux_implementation_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['ux_implementation_task'],
+            output_file='ux_package'
         )
 
     @crew
     def crew(self) -> Crew:
-        """Creates the AgentCrewaiOllama crew"""
-        # To learn how to add knowledge sources to your crew, check out the documentation:
-        # https://docs.crewai.com/concepts/knowledge#what-is-knowledge
-
+        """Creates the Software House Development Crew"""
         return Crew(
-            agents=self.agents, # Automatically created by the @agent decorator
-            tasks=self.tasks, # Automatically created by the @task decorator
-            process=Process.sequential,
-            verbose=True,
-            # process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
+            agents=self.agents,
+            tasks=self.tasks,
+            process=Process.hierarchical,
+            verbose=2,
+            memory=True,
+            max_iter=15
         )
